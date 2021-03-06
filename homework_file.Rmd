@@ -1,0 +1,188 @@
+---
+title: "Lydia Myers ADA HW 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Challenge 1
+
+
+Loading data into R
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+```
+
+```{r}
+
+f<-"https://raw.githubusercontent.com/difiore/ada-2021-datasets/main/darwin.txt"
+darwin<-read.delim(f, header=T, sep="\t")
+```
+
+How many paragraphs are there in the chapter? 
+
+```{r}
+glimpse(darwin)
+```
+There are 56. 
+
+Printing the 34th paragraph
+```{r}
+x<-darwin[34,]
+print(x)
+```
+Splitting the 34th paragraph into a vector of 1-word character strings
+```{r}
+split<-str_split(x, " ")
+split<-unlist(split)
+```
+Looking into the structure of the new split vector
+```{r}
+
+unique<-unique(split)
+length(unique)
+
+names(table(split))[as.vector(table(split))==max(table(split))]
+
+frequencies<-table(split)
+length(names(frequencies)[frequencies==1])
+
+length(names(frequencies)[frequencies>4])
+```
+There are 129 unique words in the vector, the most common of which is 'of'. 98 words appear only once, and 5 words appear 5 or more times.
+
+Extracting the text of the last paragraph
+```{r}
+final_quote<-darwin[56,]
+```
+Splitting the last paragraph
+```{r}
+split_quote<-str_split(final_quote, " ")
+split_quote<-unlist(split_quote)
+```
+Extracting every 3rd word of the last paragraph
+```{r}
+every_third<-split_quote[seq(1,length(split_quote), 5)]
+print(every_third)
+```
+Arranging the resulting vector into reverse alphabetical order
+```{r}
+sort(every_third, decreasing=T)
+```
+
+## Challenge 2
+
+
+Creating the vectors
+```{r}
+t<-c(35,88,42,84,81,30)
+city<-c("Beijing","Lagos","Paris","Rio de Janeiro","San Juan","Toronto")
+```
+
+Associating the temperature data with the city data
+```{r}
+names(t)<-city
+```
+Accessing the temperature of the first three cities on the list
+```{r}
+t[1:3]
+```
+Accessing the temperatures of Paris and San Juan
+```{r}
+t[c(3,5)]
+```
+
+## Challenge 3
+
+Creating the matrix
+```{r}
+m1<-matrix(data=c(159:1),nrow=8, ncol=20)
+```
+Extracting the number at row 5, column 2
+```{r}
+m1[5,2]
+```
+Extracting rows 5-7
+```{r}
+m1[c(5:7),]
+```
+Extracting the contents of row3 column4 to row6 column9 as a new variable
+```{r}
+m2<-m1[3:6,4:9]
+m2
+```
+Examining this variable
+```{r}
+class(m2)
+mode(m2)
+```
+This variable is a matrix array, and the mode is numeric.
+
+## Challenge 4
+
+Creating the array
+```{r}
+a<-array(data=seq(2,800,2), dim=c(5,5,4,4))
+```
+Testing to see what the examples return
+```{r}
+a[1,1,1,2]
+a[2,3,2,]
+a[1:5,1:5,3,3]
+```
+
+## Challenge 5
+
+Creating the list
+```{r}
+#strepsirrhines
+lorisoidea<-c("Lorisidae","Galagidae")
+lorisiformes<-list(lorisoidea)
+names(lorisiformes)<c("Lorisoidea")
+lemuroidea<-c("Cheirogaleidae","Lepilemuridae","Indriidae","Lemuridae","Daubentoniidae")
+lemuriformes<-list(lemuroidea)
+names(lemuriformes)<-c("Lemuroidea")
+strepsirrhini<-list(lorisiformes, lemuriformes)
+names(strepsirrhini)<-c("Lorisiformes","Lemuriformes")
+
+#haplorhines
+cercopithecoidea<-c("Cercopithecidae")
+hominoidea<-c("Hylobatidae","Hominidae")
+catarhini<-list(hominoidea, cercopithecoidea)
+names(catarhini)<-c("Hominoidea","Cercopithecoidea")
+ceboidea<-c("Cebidae","Atelidae","Pitheciidae")
+platyrrhini<-list(ceboidea)
+names(platyrrhini)<-c("Ceboidea")
+simiiformes<-list(platyrrhini, catarhini)
+names(simiiformes)<-c("Platyrrhini", "Catarhini")
+tarsioidea<-c("Tarsiidae")
+tarsiiformes<-list(tarsioidea)
+names(tarsiiformes)<-c("Tarsioidea")
+haplorhini<-list(tarsiiformes, simiiformes)
+names(haplorhini)<-c("Tarsiiformes","Simiiformes")
+primates<-list(strepsirrhini, haplorhini)
+names(primates)<-c("Strepsirrhini","Haplorhini")
+
+#all primates
+all<-list(primates)
+names(all)<-c("Primates")
+```
+Separating platyrrhines
+```{r}
+nwm<-haplorhini[[2]][1]
+```
+Looking at the structure of this new variable
+```{r}
+class(nwm)
+mode(nwm)
+```
+'nwm' is a list, and the mode is also list.
+
+Extracting tarsiers
+```{r}
+haplorhini$Tarsiiformes
+```
